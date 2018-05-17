@@ -1,0 +1,7 @@
+[package]
+name = "pdf-word-count"
+version = "0.1.0"
+authors = ["Martin Ek <mail@ekmartin.com>"]
+
+[dependencies]
+lopdf = "*"
