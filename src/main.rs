@@ -1,6 +1,7 @@
 extern crate lopdf;
 
 use std::collections::BTreeMap;
+use std::fmt;
 use std::io;
 
 use lopdf::content::Content;
@@ -9,17 +10,19 @@ use lopdf::{Document, Object, ObjectId};
 // ¯\_(ツ)_/¯
 const SPACE_THRESHOLD: i64 = 100;
 
+#[derive(Default)]
 struct Collector {
     text: String,
 }
 
-impl Collector {
-    fn new() -> Self {
-        Self {
-            text: String::new(),
-        }
-    }
+#[derive(Default)]
+struct WordCount {
+    words: u64,
+    characters: u64,
+    lines: u64,
+}
 
+impl Collector {
     fn collect_text(&mut self, encoding: Option<&str>, operands: &[Object]) {
         for operand in operands.iter() {
             match operand {
@@ -50,6 +53,7 @@ impl Collector {
         let raw_content = document.get_page_content(page_id).unwrap();
         let content = Content::decode(&raw_content).unwrap();
         let mut current_encoding = None;
+
         for operation in content.operations.iter() {
             match operation.operator.as_ref() {
                 "Tf" => {
@@ -70,15 +74,35 @@ impl Collector {
             }
         }
     }
+
+    fn count(&self) -> WordCount {
+        let mut wc = WordCount::default();
+        wc.characters = self.text.len() as u64;
+        for c in self.text.chars() {
+            match c {
+                ' ' => wc.words += 1,
+                '\n' => wc.lines += 1,
+                _ => {}
+            }
+        }
+
+        wc
+    }
+}
+
+impl fmt::Display for WordCount {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}\t{}\t{}", self.lines, self.words, self.characters)
+    }
 }
 
 fn main() {
     let document = Document::load_from(io::stdin()).unwrap();
-    let mut collector = Collector::new();
+    let mut collector = Collector::default();
     let pages = document.get_pages();
     for page_id in pages.values().into_iter() {
         collector.process_page(&document, *page_id);
     }
 
-    println!("{}", collector.text);
+    println!("{}", collector.count());
 }
