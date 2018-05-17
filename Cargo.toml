@@ -4,4 +4,8 @@ version = "0.1.0"
 authors = ["Martin Ek <mail@ekmartin.com>"]
 
 [dependencies]
-lopdf = "*"
+lopdf = "0.15.1"
+
+[[bin]]
+name = "pdf-wc"
+path = "src/main.rs"
