@@ -26,3 +26,11 @@ fn multiple_words() {
     assert_eq!(wc.lines, 9);
     assert_eq!(wc.characters, 46);
 }
+
+#[test]
+fn empty() {
+    let wc = process("empty");
+    assert_eq!(wc.words, 0);
+    assert_eq!(wc.lines, 0);
+    assert_eq!(wc.characters, 0);
+}
