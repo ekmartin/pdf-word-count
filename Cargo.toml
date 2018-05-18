@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Martin Ek <mail@ekmartin.com>"]
 
 [dependencies]
+clap = "2.31.2"
 lopdf = "0.15.1"
 
 [[bin]]
