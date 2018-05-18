@@ -17,9 +17,9 @@ pub struct Collector {
 
 #[derive(Default)]
 pub struct WordCount {
-    words: u64,
-    characters: u64,
-    lines: u64,
+    pub words: usize,
+    pub characters: usize,
+    pub lines: usize,
 }
 
 impl Collector {
@@ -50,7 +50,7 @@ impl Collector {
                 Object::Integer(i) if i.abs() > SPACE_THRESHOLD => {
                     self.text.push(' ');
                 }
-                _op => {}
+                _ => {}
             }
         }
     }
@@ -81,28 +81,24 @@ impl Collector {
                     // TODO: This should remove end-of-line dashes.
                     self.text.push(' ')
                 },
-                _op => {}
-            }
-        }
-    }
-
-    fn count(&self) -> WordCount {
-        let mut wc = WordCount::default();
-        wc.characters = self.text.len() as u64;
-        for c in self.text.chars() {
-            match c {
-                ' ' => wc.words += 1,
-                '\n' => wc.lines += 1,
                 _ => {}
             }
         }
 
+        self.text = self.text.trim().to_string();
+    }
+
+    fn count(&self) -> WordCount {
+        let mut wc = WordCount::default();
+        wc.characters = self.text.len();
+        wc.words = self.text.split_whitespace().count();
+        wc.lines = self.text.lines().count();
         wc
     }
 }
 
 impl fmt::Display for WordCount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}\t{}\t{}", self.lines, self.words, self.characters)
+        write!(f, "\t{}\t{}\t{}", self.lines, self.words, self.characters)
     }
 }

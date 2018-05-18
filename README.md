@@ -1,6 +1,6 @@
 # pdf-word-count
 
-> Displays the number of words, lines and characters in a PDF.
+> Displays the number of lines, words and characters in a PDF.
 
 ## Installation
 

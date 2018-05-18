@@ -1,0 +1,28 @@
+extern crate pdf_word_count;
+
+use std::fs::File;
+
+use pdf_word_count::{Collector, WordCount};
+
+fn process(fixture: &str) -> WordCount {
+    let filename = format!("tests/fixtures/{}.pdf", fixture);
+    Collector::process_document(File::open(filename).unwrap())
+}
+
+#[test]
+fn single_word() {
+    let wc = process("single");
+    assert_eq!(wc.words, 1);
+    assert_eq!(wc.lines, 1);
+    assert_eq!(wc.characters, 6);
+}
+
+#[test]
+fn multiple_words() {
+    let wc = process("multiple");
+    assert_eq!(wc.words, 5);
+
+    // TODO: This should be 3, not 9!
+    assert_eq!(wc.lines, 9);
+    assert_eq!(wc.characters, 46);
+}
