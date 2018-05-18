@@ -77,8 +77,12 @@ impl Collector {
                 "ET" => if !self.text.ends_with('\n') {
                     self.text.push('\n')
                 },
-                "Td" | "TD" | "T*" => if !self.text.ends_with(' ') {
-                    // TODO: This should remove end-of-line dashes.
+                "Td" | "TD" | "T*" if self.text.ends_with('-') => {
+                    // Trim away end-of-line hyphenation:
+                    let len = self.text.len() - 1;
+                    self.text.truncate(len)
+                },
+                "Td" | "TD" | "T*" if !self.text.ends_with(' ') => {
                     self.text.push(' ')
                 },
                 _ => {}

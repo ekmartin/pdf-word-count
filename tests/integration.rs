@@ -34,3 +34,13 @@ fn empty() {
     assert_eq!(wc.lines, 0);
     assert_eq!(wc.characters, 0);
 }
+
+#[test]
+fn hyphen() {
+    let wc = process("hyphen");
+    assert_eq!(wc.words, 6);
+    // TODO: Technically, this is wrong since the word is hyphenated onto a second line. Not sure
+    // if it matters too much though.
+    assert_eq!(wc.lines, 1);
+    assert_eq!(wc.characters, 82);
+}
