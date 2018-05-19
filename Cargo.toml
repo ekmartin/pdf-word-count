@@ -1,7 +1,12 @@
 [package]
 name = "pdf-word-count"
+description = "Displays the number of lines, words and characters in a PDF"
+license = "MIT"
 version = "0.1.0"
+repository = "https://github.com/ekmartin/pdf-word-count"
 authors = ["Martin Ek <mail@ekmartin.com>"]
+readme = "README.md"
+exclude = ["/tests/**/*"]
 
 [dependencies]
 clap = "2.31.2"
