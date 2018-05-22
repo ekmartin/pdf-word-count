@@ -9,7 +9,7 @@ use std::io;
 fn main() {
     let args = App::new("pdf-wc")
         .version("0.1.0")
-        .about("Displays the number of words, lines and characters in a PDF.")
+        .about("Displays the number of lines, words, and characters in a PDF.")
         .arg(
             Arg::with_name("file")
                 .help("File to read from")
